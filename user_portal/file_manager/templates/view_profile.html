@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Profile of {{ user.username }}</h2>
+  
+  <h3>Uploaded Files:</h3>
+  {% if files %}
+    <ul>
+      {% for file in files %}
+        <li>{{ file.file.name }} - Uploaded at {{ file.uploaded_at }}
+          <form method="post" action="{% url 'share_file' file_id=file.id recipient_username=user.username %}">
+            {% csrf_token %}
+            <button type="submit">Share File</button>
+          </form>
+          <p>Debug: file.id = {{ file.id }}</p>
+          <p>Debug: user.username = {{ user.username }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No files uploaded by this user.</p>
+  {% endif %}
+{% endblock %}
